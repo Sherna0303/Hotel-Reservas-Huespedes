@@ -66,11 +66,6 @@ public class MenuPrincipal extends JFrame {
 		imagenFondo.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/menu-img.png")));
 		panel.add(imagenFondo);
 		
-		JLabel logo = new JLabel("");
-		logo.setBounds(722, 80, 150, 156);
-		logo.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/aH-150px.png")));
-		panel.add(logo);
-		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 500, 910, 37);
 		panel_1.setBackground(new Color(12, 138, 199));
@@ -135,7 +130,7 @@ public class MenuPrincipal extends JFrame {
 		
 		//Botón Login
 		JPanel btnLogin = new JPanel(); 
-		btnLogin.setBounds(754, 300, 83, 70);
+		btnLogin.setBounds(753, 221, 83, 70);
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -156,7 +151,7 @@ public class MenuPrincipal extends JFrame {
 		imagenLogin.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/login.png")));
 		
 		JLabel lblTitulo = new JLabel("LOGIN");
-		lblTitulo.setBounds(754, 265, 83, 24);
+		lblTitulo.setBounds(753, 186, 83, 24);
 		lblTitulo.setBackground(SystemColor.window);
 		panel.add(lblTitulo);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);

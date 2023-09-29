@@ -208,12 +208,6 @@ public class Login extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/imagenes/lOGO-50PX.png")));
-		lblNewLabel_1.setBounds(65, 65, 48, 59);
-		panel.add(lblNewLabel_1);
-		
 		JPanel header = new JPanel();
 		header.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override

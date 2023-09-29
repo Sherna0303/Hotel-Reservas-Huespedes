@@ -81,11 +81,6 @@ public class MenuUsuario extends JFrame {
 		contentPane.add(panelMenu);
 		panelMenu.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setBounds(50, 58, 150, 150);
-		panelMenu.add(lblNewLabel_2);
-		lblNewLabel_2.setIcon(new ImageIcon(MenuUsuario.class.getResource("/imagenes/aH-150px.png")));
-		
 		JPanel btnRegistro = new JPanel();
 		btnRegistro.addMouseListener(new MouseAdapter() {
 			@Override
@@ -189,7 +184,7 @@ public class MenuUsuario extends JFrame {
 	    contentPane.add(panelFecha);
 	    panelFecha.setLayout(null);
 	    
-	    JLabel lblNewLabel_1 = new JLabel("Sistema de reservas Hotel Alura");
+	    JLabel lblNewLabel_1 = new JLabel("Sistema de reservas de Hotel");
 	    lblNewLabel_1.setBounds(180, 11, 356, 42);
 	    panelFecha.add(lblNewLabel_1);
 	    lblNewLabel_1.setForeground(Color.WHITE);

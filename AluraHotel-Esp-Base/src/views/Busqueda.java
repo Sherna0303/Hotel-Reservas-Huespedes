@@ -121,11 +121,6 @@ public class Busqueda extends JFrame {
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 		
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("/imagenes/Ha-100px.png")));
-		lblNewLabel_2.setBounds(56, 51, 104, 107);
-		contentPane.add(lblNewLabel_2);
-		
 		JPanel header = new JPanel();
 		header.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
