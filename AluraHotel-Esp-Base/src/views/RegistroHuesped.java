@@ -13,6 +13,7 @@ import java.awt.Color;
 import com.mysql.cj.xdevapi.PreparableStatement;
 import com.toedter.calendar.JDateChooser;
 
+import backend.registrar_huesped;
 import bdConnect.Conexion;
 
 import javax.swing.JComboBox;
@@ -268,22 +269,16 @@ public class RegistroHuesped extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				Conexion conexion = new Conexion();
-				Connection connection = null;
-				PreparedStatement ps = null;
+				registrar_huesped huesped = new registrar_huesped();
 				
 				//Guardar datos
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
 				java.sql.Date fechaNacimiento = null;
 				
-				if (txtFechaN.toString().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Debe seleccionar una fecha");
-				} else {
-					//Tomar fecha del Jcalendar y tomar unicamente la fecha 0000-00-00
-					Long d = txtFechaN.getDate().getTime();
-					fechaNacimiento = new java.sql.Date(d);
-				}
+				//Tomar fecha del Jcalendar y tomar unicamente la fecha 0000-00-00
+				Long d = txtFechaN.getDate().getTime();
+				fechaNacimiento = new java.sql.Date(d);
 				
 				String nacionalidad = txtNacionalidad.getSelectedItem().toString();
 				String telefono = txtTelefono.getText();
@@ -292,35 +287,13 @@ public class RegistroHuesped extends JFrame {
 				if (nombre.isEmpty() || apellido.isEmpty() || nacionalidad.isEmpty() || telefono.isEmpty() || numReserva.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Debe completar todos los datos");
 				} else {
+					//Agregar al huesped
+					huesped.registrarHuesped(nombre, apellido, fechaNacimiento.toString(), nacionalidad, telefono, numReserva);
 					
-					try {
-						//Concetamos con la base de datos
-						connection = conexion.conectar();
-						
-						//Consulta
-						String consultaString = "INSERT INTO huespedes (nombre, apeliido, fechaNacimiento, nacionalidad, telefono, numReserva)VALUES(?,?,?,?,?,?)";
-						
-						//Agregamos los datos de la consulta
-						ps = connection.prepareStatement(consultaString);
-						ps.setString(1, nombre);
-						ps.setString(2, apellido);
-						ps.setString(3, fechaNacimiento.toString());
-						ps.setString(4, nacionalidad);
-						ps.setString(5, telefono);
-						ps.setString(6, numReserva);
-						
-						//Ejecutamos
-						ps.execute();
-						
-						//Confirmamos el ingreso de datos al usuario
-						Exito exito = new Exito();
-						exito.setVisible(true);
-						dispose();	
-						
-					} catch (SQLException ex) {
-						// TODO: handle exception
-						ex.printStackTrace();
-					}
+					//Confirmamos el ingreso de datos al usuario
+					Exito exito = new Exito();
+					exito.setVisible(true);
+					dispose();	
 				}
 			}
 		});
