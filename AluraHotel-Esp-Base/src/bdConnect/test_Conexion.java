@@ -13,7 +13,6 @@ public class test_Conexion {
 		Statement stm = null;
 		ResultSet resultSet = null;
 		
-		
 		try {
 			connection = conexion.conectar();
 			stm = connection.createStatement();

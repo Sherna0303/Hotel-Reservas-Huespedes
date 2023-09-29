@@ -4,9 +4,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.hamcrest.core.IsNull;
+
 import javax.swing.JTextField;
 import java.awt.Color;
+
+import com.mysql.cj.xdevapi.PreparableStatement;
 import com.toedter.calendar.JDateChooser;
+
+import bdConnect.Conexion;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -19,6 +27,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.Format;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -59,6 +71,7 @@ public class RegistroHuesped extends JFrame {
 	 * Create the frame.
 	 */
 	public RegistroHuesped() {
+
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,6 +154,7 @@ public class RegistroHuesped extends JFrame {
 		contentPane.add(txtApellido);
 		
 		txtFechaN = new JDateChooser();
+		txtFechaN.setToolTipText("");
 		txtFechaN.setBounds(560, 278, 285, 36);
 		txtFechaN.getCalendarButton().setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/icon-reservas.png")));
 		txtFechaN.getCalendarButton().setBackground(SystemColor.textHighlight);
@@ -151,7 +165,7 @@ public class RegistroHuesped extends JFrame {
 		txtNacionalidad.setBounds(560, 350, 289, 36);
 		txtNacionalidad.setBackground(SystemColor.text);
 		txtNacionalidad.setFont(new Font("Roboto", Font.PLAIN, 16));
-		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] {"afgano-afgana", "alemán-", "alemana", "árabe-árabe", "argentino-argentina", "australiano-australiana", "belga-belga", "boliviano-boliviana", "brasileño-brasileña", "camboyano-camboyana", "canadiense-canadiense", "chileno-chilena", "chino-china", "colombiano-colombiana", "coreano-coreana", "costarricense-costarricense", "cubano-cubana", "danés-danesa", "ecuatoriano-ecuatoriana", "egipcio-egipcia", "salvadoreño-salvadoreña", "escocés-escocesa", "español-española", "estadounidense-estadounidense", "estonio-estonia", "etiope-etiope", "filipino-filipina", "finlandés-finlandesa", "francés-francesa", "galés-galesa", "griego-griega", "guatemalteco-guatemalteca", "haitiano-haitiana", "holandés-holandesa", "hondureño-hondureña", "indonés-indonesa", "inglés-inglesa", "iraquí-iraquí", "iraní-iraní", "irlandés-irlandesa", "israelí-israelí", "italiano-italiana", "japonés-japonesa", "jordano-jordana", "laosiano-laosiana", "letón-letona", "letonés-letonesa", "malayo-malaya", "marroquí-marroquí", "mexicano-mexicana", "nicaragüense-nicaragüense", "noruego-noruega", "neozelandés-neozelandesa", "panameño-panameña", "paraguayo-paraguaya", "peruano-peruana", "polaco-polaca", "portugués-portuguesa", "puertorriqueño-puertorriqueño", "dominicano-dominicana", "rumano-rumana", "ruso-rusa", "sueco-sueca", "suizo-suiza", "tailandés-tailandesa", "taiwanes-taiwanesa", "turco-turca", "ucraniano-ucraniana", "uruguayo-uruguaya", "venezolano-venezolana", "vietnamita-vietnamita"}));
+		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] {"afgano-afgana", "alemán-alemana", "árabe-árabe", "argentino-argentina", "australiano-australiana", "belga-belga", "boliviano-boliviana", "brasileño-brasileña", "camboyano-camboyana", "canadiense-canadiense", "chileno-chilena", "chino-china", "colombiano-colombiana", "coreano-coreana", "costarricense-costarricense", "cubano-cubana", "danés-danesa", "ecuatoriano-ecuatoriana", "egipcio-egipcia", "salvadoreño-salvadoreña", "escocés-escocesa", "español-española", "estadounidense-estadounidense", "estonio-estonia", "etiope-etiope", "filipino-filipina", "finlandés-finlandesa", "francés-francesa", "galés-galesa", "griego-griega", "guatemalteco-guatemalteca", "haitiano-haitiana", "holandés-holandesa", "hondureño-hondureña", "indonés-indonesa", "inglés-inglesa", "iraquí-iraquí", "iraní-iraní", "irlandés-irlandesa", "israelí-israelí", "italiano-italiana", "japonés-japonesa", "jordano-jordana", "laosiano-laosiana", "letón-letona", "letonés-letonesa", "malayo-malaya", "marroquí-marroquí", "mexicano-mexicana", "nicaragüense-nicaragüense", "noruego-noruega", "neozelandés-neozelandesa", "panameño-panameña", "paraguayo-paraguaya", "peruano-peruana", "polaco-polaca", "portugués-portuguesa", "puertorriqueño-puertorriqueño", "dominicano-dominicana", "rumano-rumana", "ruso-rusa", "sueco-sueca", "suizo-suiza", "tailandés-tailandesa", "taiwanes-taiwanesa", "turco-turca", "ucraniano-ucraniana", "uruguayo-uruguaya", "venezolano-venezolana", "vietnamita-vietnamita"}));
 		contentPane.add(txtNacionalidad);
 		
 		JLabel lblNombre = new JLabel("NOMBRE");
@@ -253,6 +267,61 @@ public class RegistroHuesped extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				Conexion conexion = new Conexion();
+				Connection connection = null;
+				PreparedStatement ps = null;
+				
+				//Guardar datos
+				String nombre = txtNombre.getText();
+				String apellido = txtApellido.getText();
+				java.sql.Date fechaNacimiento = null;
+				
+				if (txtFechaN.toString().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Debe seleccionar una fecha");
+				} else {
+					//Tomar fecha del Jcalendar y tomar unicamente la fecha 0000-00-00
+					Long d = txtFechaN.getDate().getTime();
+					fechaNacimiento = new java.sql.Date(d);
+				}
+				
+				String nacionalidad = txtNacionalidad.getSelectedItem().toString();
+				String telefono = txtTelefono.getText();
+				String numReserva = txtNreserva.getText();
+				
+				if (nombre.isEmpty() || apellido.isEmpty() || nacionalidad.isEmpty() || telefono.isEmpty() || numReserva.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Debe completar todos los datos");
+				} else {
+					
+					try {
+						//Concetamos con la base de datos
+						connection = conexion.conectar();
+						
+						//Consulta
+						String consultaString = "INSERT INTO huespedes (nombre, apeliido, fechaNacimiento, nacionalidad, telefono, numReserva)VALUES(?,?,?,?,?,?)";
+						
+						//Agregamos los datos de la consulta
+						ps = connection.prepareStatement(consultaString);
+						ps.setString(1, nombre);
+						ps.setString(2, apellido);
+						ps.setString(3, fechaNacimiento.toString());
+						ps.setString(4, nacionalidad);
+						ps.setString(5, telefono);
+						ps.setString(6, numReserva);
+						
+						//Ejecutamos
+						ps.execute();
+						
+						//Confirmamos el ingreso de datos al usuario
+						Exito exito = new Exito();
+						exito.setVisible(true);
+						dispose();	
+						
+					} catch (SQLException ex) {
+						// TODO: handle exception
+						ex.printStackTrace();
+					}
+				}
 			}
 		});
 		btnguardar.setLayout(null);
