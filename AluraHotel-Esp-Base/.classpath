@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/sebas/OneDrive/Escritorio/Universidad/Java/Complementos/Jcalendar/jgoodies-common-1.2.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/sebas/OneDrive/Escritorio/Universidad/Java/Complementos/Jcalendar/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/sebas/OneDrive/Escritorio/Universidad/Java/Complementos/Jcalendar/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/sebas/OneDrive/Escritorio/Universidad/Java/Complementos/mysql-connector-j-8.0.33/mysql-connector-j-8.0.33.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

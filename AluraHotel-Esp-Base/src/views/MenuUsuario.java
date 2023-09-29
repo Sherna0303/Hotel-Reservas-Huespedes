@@ -98,7 +98,7 @@ public class MenuUsuario extends JFrame {
 				dispose();
 			}
 		});
-		btnRegistro.setBounds(0, 255, 257, 56);
+		btnRegistro.setBounds(0, 72, 257, 56);
 		btnRegistro.setBackground(new Color(12, 138, 199));
 		panelMenu.add(btnRegistro);
 		btnRegistro.setLayout(null);
@@ -128,7 +128,7 @@ public class MenuUsuario extends JFrame {
 				dispose();
 			}
 		});
-		btnBusqueda.setBounds(0, 312, 257, 56);
+		btnBusqueda.setBounds(0, 129, 257, 56);
 		btnBusqueda.setBackground(new Color(12, 138, 199));
 		panelMenu.add(btnBusqueda);
 		btnBusqueda.setLayout(null);
@@ -142,7 +142,7 @@ public class MenuUsuario extends JFrame {
 		btnBusqueda.add(lblBusquedaDeReservas);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(26, 219, 201, 2);
+		separator.setBounds(26, 36, 201, 2);
 		panelMenu.add(separator);
 		header.setLayout(null);
 		header.setBackground(Color.WHITE);
