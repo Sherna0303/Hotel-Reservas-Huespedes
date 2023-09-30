@@ -18,7 +18,7 @@ public class registrar_huesped {
 			connection = conexion.conectar();
 			
 			//Consulta
-			String consultaString = "INSERT INTO huespedes (nombre, apeliido, fechaNacimiento, nacionalidad, telefono, numReserva)VALUES(?,?,?,?,?,?)";
+			String consultaString = "INSERT INTO huespedes (nombre, apellido, fechaNacimiento, nacionalidad, telefono, numReserva)VALUES(?,?,?,?,?,?)";
 			
 			//Agregamos los datos de la consulta
 			ps = connection.prepareStatement(consultaString);
@@ -35,6 +35,18 @@ public class registrar_huesped {
 		} catch (SQLException ex) {
 			// TODO: handle exception
 			ex.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+				
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 }
