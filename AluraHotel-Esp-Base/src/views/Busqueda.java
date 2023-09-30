@@ -6,6 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import backend.buscar_huesped;
+import backend.mostrar_huespedes;
+import bdConnect.Conexion;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -25,6 +30,10 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -121,6 +130,10 @@ public class Busqueda extends JFrame {
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 		
+		mostrar_huespedes mostrarHuepedes = new mostrar_huespedes();
+		DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
+		tbHuespedes.setModel(modelo);
+		
 		JPanel header = new JPanel();
 		header.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -211,7 +224,14 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				// Obtener datos del input
+				String buscar = txtBuscar.getText().toString();
+				
+				buscar_huesped bsHuesped = new buscar_huesped();
+				
+				DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
+				tbHuespedes.setModel(modelo);
+				
 			}
 		});
 		btnbuscar.setLayout(null);
