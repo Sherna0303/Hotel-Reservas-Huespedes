@@ -11,15 +11,21 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import backend.calcular_reserva;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.text.Format;
+import java.text.NumberFormat;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -41,19 +47,18 @@ public class ReservasView extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReservasView frame = new ReservasView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                ReservasView frame = new ReservasView();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+   
+    
 	/**
 	 * Create the frame.
 	 */
@@ -130,6 +135,11 @@ public class ReservasView extends JFrame {
 		panel_1.setBackground(new Color(12, 138, 199));
 		panel.add(panel_1);
 		panel_1.setLayout(null);
+		
+		JLabel logo = new JLabel("");
+		logo.setBounds(197, 68, 104, 107);
+		panel_1.add(logo);
+		logo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/Ha-100px.png")));
 		
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(0, 140, 500, 409);
@@ -247,6 +257,8 @@ public class ReservasView extends JFrame {
 		txtFechaEntrada.setBackground(Color.WHITE);
 		txtFechaEntrada.setBorder(new LineBorder(SystemColor.window));
 		txtFechaEntrada.setDateFormatString("yyyy-MM-dd");
+		JDateChooser jdcFecha;
+		
 		txtFechaEntrada.setFont(new Font("Roboto", Font.PLAIN, 18));
 		panel.add(txtFechaEntrada);
 
@@ -259,7 +271,20 @@ public class ReservasView extends JFrame {
 		txtFechaSalida.setFont(new Font("Roboto", Font.PLAIN, 18));
 		txtFechaSalida.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
+				// Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
+				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
+					java.sql.Date fechaIngreso = null;
+		        	java.sql.Date fechaSalida = null;
+		        	Long entrada = txtFechaEntrada.getDate().getTime();
+		        	Long salida = txtFechaSalida.getDate().getTime();
+		        	fechaIngreso = new java.sql.Date(entrada);
+		        	fechaSalida = new java.sql.Date(salida);
+		        	
+		        	// Creando instancia de una clase para calcular
+		        	calcular_reserva calcular = new calcular_reserva();
+		        	String costo = calcular.calcularCosto(fechaIngreso.toString(), fechaSalida.toString());
+		            txtValor.setText(costo);
+				}
 			}
 		});
 		txtFechaSalida.setDateFormatString("yyyy-MM-dd");
@@ -269,9 +294,9 @@ public class ReservasView extends JFrame {
 
 		txtValor = new JTextField();
 		txtValor.setBackground(SystemColor.text);
-		txtValor.setHorizontalAlignment(SwingConstants.CENTER);
+		txtValor.setHorizontalAlignment(SwingConstants.LEFT);
 		txtValor.setForeground(Color.BLACK);
-		txtValor.setBounds(78, 328, 43, 33);
+		txtValor.setBounds(78, 328, 268, 33);
 		txtValor.setEditable(false);
 		txtValor.setFont(new Font("Roboto Black", Font.BOLD, 17));
 		txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -286,28 +311,45 @@ public class ReservasView extends JFrame {
 		txtFormaPago.setFont(new Font("Roboto", Font.PLAIN, 16));
 		txtFormaPago.setModel(new DefaultComboBoxModel(new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"}));
 		panel.add(txtFormaPago);
-
+		
 		JPanel btnsiguiente = new JPanel();
-		btnsiguiente.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {		
-					RegistroHuesped registro = new RegistroHuesped();
+		btnsiguiente.addMouseListener(new MouseAdapter() {		
+		    public void mouseClicked(MouseEvent e) {
+				
+		        if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
+		        	
+		            
+		            String formaPago = (String) txtFormaPago.getSelectedItem();
+		            //HoraDeRegistro horaDeRegistro = new HoraDeRegistro();
+		            //horaDeRegistro.registrarEstadia(new Timestamp(fechaEntrada.getTime()), new Timestamp(fechaSalida.getTime()), formaPago, calcularDiasReservados());
+		            RegistroHuesped registro = new RegistroHuesped();
 					registro.setVisible(true);
-				} else {
-					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
-				}
-			}						
+		        } else {
+		            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+		        }
+		    }
 		});
 		btnsiguiente.setLayout(null);
 		btnsiguiente.setBackground(SystemColor.textHighlight);
 		btnsiguiente.setBounds(238, 493, 122, 35);
 		panel.add(btnsiguiente);
 		btnsiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		
+		JLabel lblNewLabel = new JLabel("Siguiente");
+		lblNewLabel.setFont(new Font("Roboto Black", Font.PLAIN, 18));
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setBounds(20, 8, 91, 20);
+		btnsiguiente.add(lblNewLabel);
 
 
 	}
 		
+	protected int calcularDiasReservados() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
