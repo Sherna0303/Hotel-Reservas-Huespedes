@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
+import backend.Registrar_Reserva;
 import backend.calcular_reserva;
 
 import java.awt.Font;
@@ -43,6 +44,9 @@ public class ReservasView extends JFrame {
 	int xMouse, yMouse;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+	private java.sql.Date fechaIngreso = null;
+	private java.sql.Date fechaSalida = null;
+	private String costo;
 
 	/**
 	 * Launch the application.
@@ -135,11 +139,6 @@ public class ReservasView extends JFrame {
 		panel_1.setBackground(new Color(12, 138, 199));
 		panel.add(panel_1);
 		panel_1.setLayout(null);
-		
-		JLabel logo = new JLabel("");
-		logo.setBounds(197, 68, 104, 107);
-		panel_1.add(logo);
-		logo.setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/Ha-100px.png")));
 		
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(0, 140, 500, 409);
@@ -261,6 +260,8 @@ public class ReservasView extends JFrame {
 		
 		txtFechaEntrada.setFont(new Font("Roboto", Font.PLAIN, 18));
 		panel.add(txtFechaEntrada);
+		
+		
 
 		txtFechaSalida = new JDateChooser();
 		txtFechaSalida.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("/imagenes/icon-reservas.png")));
@@ -273,8 +274,7 @@ public class ReservasView extends JFrame {
 			public void propertyChange(PropertyChangeEvent evt) {
 				// Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
 				if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
-					java.sql.Date fechaIngreso = null;
-		        	java.sql.Date fechaSalida = null;
+					
 		        	Long entrada = txtFechaEntrada.getDate().getTime();
 		        	Long salida = txtFechaSalida.getDate().getTime();
 		        	fechaIngreso = new java.sql.Date(entrada);
@@ -282,7 +282,7 @@ public class ReservasView extends JFrame {
 		        	
 		        	// Creando instancia de una clase para calcular
 		        	calcular_reserva calcular = new calcular_reserva();
-		        	String costo = calcular.calcularCosto(fechaIngreso.toString(), fechaSalida.toString());
+		        	costo = calcular.calcularCosto(fechaIngreso.toString(), fechaSalida.toString());
 		            txtValor.setText(costo);
 				}
 			}
@@ -317,12 +317,16 @@ public class ReservasView extends JFrame {
 		    public void mouseClicked(MouseEvent e) {
 				
 		        if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
+		        	String formaPago = txtFormaPago.getSelectedItem().toString();
+		        	String [] reserva = new String[4];
 		        	
-		            
-		            String formaPago = (String) txtFormaPago.getSelectedItem();
-		            //HoraDeRegistro horaDeRegistro = new HoraDeRegistro();
-		            //horaDeRegistro.registrarEstadia(new Timestamp(fechaEntrada.getTime()), new Timestamp(fechaSalida.getTime()), formaPago, calcularDiasReservados());
+		        	reserva[0] = fechaIngreso.toString();
+		        	reserva[1] = fechaSalida.toString();
+		        	reserva[2] = costo;
+		        	reserva[3] = formaPago;
+
 		            RegistroHuesped registro = new RegistroHuesped();
+		            registro.setReserva(reserva);
 					registro.setVisible(true);
 		        } else {
 		            JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");

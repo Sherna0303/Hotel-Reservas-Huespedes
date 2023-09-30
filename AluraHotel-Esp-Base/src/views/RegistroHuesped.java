@@ -5,14 +5,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.hamcrest.core.IsNull;
-
 import javax.swing.JTextField;
 import java.awt.Color;
 
 import com.mysql.cj.xdevapi.PreparableStatement;
 import com.toedter.calendar.JDateChooser;
 
+import backend.Registrar_Reserva;
 import backend.registrar_huesped;
 import bdConnect.Conexion;
 
@@ -50,7 +49,12 @@ public class RegistroHuesped extends JFrame {
 	private JComboBox<Format> txtNacionalidad;
 	private JLabel labelExit;
 	private JLabel labelAtras;
+	private String [] reserva = new String[4];
 	int xMouse, yMouse;
+	
+	public void setReserva(String[] reserva) {
+		this.reserva = reserva;
+	}
 
 	/**
 	 * Launch the application.
@@ -289,6 +293,10 @@ public class RegistroHuesped extends JFrame {
 				} else {
 					// Agregar al huesped
 					huesped.registrarHuesped(nombre, apellido, fechaNacimiento.toString(), nacionalidad, telefono, numReserva);
+					
+					// Agregar Reserva
+		        	Registrar_Reserva registrarR = new Registrar_Reserva();
+		        	registrarR.registrarEstadia(numReserva, reserva[0], reserva[1], reserva[2], reserva[3]);
 					
 					// Confirmamos el ingreso de datos al usuario
 					Exito exito = new Exito();

@@ -7,9 +7,13 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import backend.BuscarReserva;
+import backend.EditarReserva;
+import backend.EliminarReserva;
 import backend.buscar_huesped;
 import backend.editar_huesped;
 import backend.eliminar_huesped;
+import backend.mostrarReservas;
 import backend.mostrar_huespedes;
 import bdConnect.Conexion;
 
@@ -122,6 +126,19 @@ public class Busqueda extends JFrame {
 		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("/imagenes/reservado.png")), scroll_table, null);
 		scroll_table.setVisible(true);
 		
+		// Mostrar todos las reservas registradas
+		mostrarReservas mostrarR = new mostrarReservas();
+		DefaultTableModel modeloR = mostrarR.mostrarReservas();
+		tbReservas.setModel(modeloR);
+		
+		tbReservas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Seleccion
+				rowSelect = tbReservas.getSelectedRow();
+			}
+		});
+		
 		
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -143,6 +160,7 @@ public class Busqueda extends JFrame {
 		DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
 		tbHuespedes.setModel(modelo);
 		
+		
 		rowSelect = tbHuespedes.getSelectedRow();
 		tbHuespedes.addMouseListener(new MouseAdapter() {
 			@Override
@@ -151,7 +169,6 @@ public class Busqueda extends JFrame {
 				rowSelect = tbHuespedes.getSelectedRow();
 			}
 		});
-		
 		
 		
 		JPanel header = new JPanel();
@@ -250,18 +267,26 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (scroll_table.isShowing()) {
-					// Buscar reservas
-					
-				} else if (scroll_tableHuespedes.isShowing()) {
-					// Buscar huespedes
-					// Obtener datos del input
-					String buscar = txtBuscar.getText().toString();
-					
-					// Crear nueva tabla
-					buscar_huesped bsHuesped = new buscar_huesped();
-					DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
-					tbHuespedes.setModel(modelo);
+				// Obtener datos del input
+				String buscar = txtBuscar.getText().toString();
+				
+				// Validar que no se busque ningun simbolo
+				if (!buscar.matches("[a-zA-Z0-9]*")) {
+					JOptionPane.showMessageDialog(null, "Solo puedes ingresar letras o numeros");
+				} else {
+					if (scroll_table.isShowing()) {
+						// Buscar reservas
+						BuscarReserva buscarReserva = new BuscarReserva();
+						DefaultTableModel modelo = buscarReserva.buscarReserva(buscar);
+						tbReservas.setModel(modelo);
+						
+					} else if (scroll_tableHuespedes.isShowing()) {
+						// Buscar huespedes
+						// Crear nueva tabla
+						buscar_huesped bsHuesped = new buscar_huesped();
+						DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
+						tbHuespedes.setModel(modelo);
+					}
 				}
 			}
 		});
@@ -285,6 +310,19 @@ public class Busqueda extends JFrame {
 				if (scroll_table.isShowing()) {
 					// Editar reservas
 					
+					EditarReserva editarReserva = new EditarReserva();
+					
+					if (rowSelect == -1) {
+						JOptionPane.showMessageDialog(null, "Selecciona la fila a editar");
+					} else {
+						String [] reservas = new String[5];
+						for (int i = 0; i < reservas.length; i++) {
+							reservas[i] = tbReservas.getValueAt(rowSelect, i).toString();
+						}
+						
+						editarReserva.editarReserv(reservas[0], reservas[1], reservas[2], reservas[3], reservas[4]);
+						JOptionPane.showMessageDialog(null, "Editado Correctamente");
+					}
 				} else if (scroll_tableHuespedes.isShowing()) {
 					// Editar Huespedes
 					editar_huesped editHuesped = new editar_huesped();
@@ -318,17 +356,37 @@ public class Busqueda extends JFrame {
 		btnEliminar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				EliminarReserva eliminarReserva = new EliminarReserva();
+				eliminar_huesped eliminarH = new eliminar_huesped();
+				
 				if (scroll_table.isShowing()) {
 					// Eliminar reservas
-					
-				} else if (scroll_tableHuespedes.isShowing()) {
-					// Eliminar huespedes
-					eliminar_huesped eliminarH = new eliminar_huesped();
 					if (rowSelect == -1) {
 						JOptionPane.showMessageDialog(null, "Selecciona la fila a eliminar");
 					} else {
-						eliminarH.eliminarHuesped(tbHuespedes.getValueAt(rowSelect, 0).toString());
+						eliminarReserva.elimnarReserva(tbReservas.getValueAt(rowSelect, 0).toString());
+						eliminarH.eliminarHuesped(tbReservas.getValueAt(rowSelect, 0).toString());
 						JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
+						//Actualizar tabla reservas
+						DefaultTableModel modeloR = mostrarR.mostrarReservas();
+						tbReservas.setModel(modeloR);
+						//Actualizar tabla huespedes
+						DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
+						tbHuespedes.setModel(modelo);
+					}
+					
+				} else if (scroll_tableHuespedes.isShowing()) {
+					// Eliminar huespedes
+					if (rowSelect == -1) {
+						JOptionPane.showMessageDialog(null, "Selecciona la fila a eliminar");
+					} else {
+						eliminarH.eliminarHuesped(tbHuespedes.getValueAt(rowSelect, 6).toString());
+						eliminarReserva.elimnarReserva(tbHuespedes.getValueAt(rowSelect, 6).toString());
+						JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
+						//Actualizar tabla reservas
+						DefaultTableModel modeloR = mostrarR.mostrarReservas();
+						tbReservas.setModel(modeloR);
+						//Actualizar tabla huespedes
 						DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
 						tbHuespedes.setModel(modelo);
 					}

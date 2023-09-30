@@ -5,24 +5,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.JOptionPane;
-
 import bdConnect.Conexion;
 
-public class eliminar_huesped {
+public class EliminarReserva {
 	
 	Conexion conexion = new Conexion();
 	Connection connection = null;
 	Statement stm = null;
 	ResultSet resultSet = null;
 	
-	public void eliminarHuesped(String numReserva) {
+	public void elimnarReserva(String numReserva) {
 		// Consulta
-		String consultaString = "DELETE FROM huespedes WHERE numReserva="+numReserva;
+		String consultaString = "DELETE FROM reservas WHERE numReserva="+numReserva;
+		
 		try {
 			connection = conexion.conectar();
 			stm = connection.createStatement();
 			stm.executeUpdate(consultaString);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -43,4 +43,5 @@ public class eliminar_huesped {
 			}
 		}
 	}
+
 }
