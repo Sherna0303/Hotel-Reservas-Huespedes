@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import backend.buscar_huesped;
+import backend.editar_huesped;
+import backend.eliminar_huesped;
 import backend.mostrar_huespedes;
 import bdConnect.Conexion;
 
@@ -18,8 +20,11 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
@@ -34,6 +39,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -46,6 +53,7 @@ public class Busqueda extends JFrame {
 	private DefaultTableModel modeloHuesped;
 	private JLabel labelAtras;
 	private JLabel labelExit;
+	private int rowSelect;
 	int xMouse, yMouse;
 
 	/**
@@ -130,9 +138,21 @@ public class Busqueda extends JFrame {
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")), scroll_tableHuespedes, null);
 		scroll_tableHuespedes.setVisible(true);
 		
+		// Mostrar todos los huespedes registrados
 		mostrar_huespedes mostrarHuepedes = new mostrar_huespedes();
 		DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
 		tbHuespedes.setModel(modelo);
+		
+		rowSelect = tbHuespedes.getSelectedRow();
+		tbHuespedes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Seleccion
+				rowSelect = tbHuespedes.getSelectedRow();
+			}
+		});
+		
+		
 		
 		JPanel header = new JPanel();
 		header.addMouseMotionListener(new MouseMotionAdapter() {
@@ -192,12 +212,12 @@ public class Busqueda extends JFrame {
 				dispose();
 			}
 			@Override
-			public void mouseEntered(MouseEvent e) { //Al usuario pasar el mouse por el botón este cambiará de color
+			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
 				btnexit.setBackground(Color.red);
 				labelExit.setForeground(Color.white);
 			}			
 			@Override
-			public void mouseExited(MouseEvent e) { //Al usuario quitar el mouse por el botón este volverá al estado original
+			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado original
 				 btnexit.setBackground(Color.white);
 			     labelExit.setForeground(Color.black);
 			}
@@ -221,25 +241,31 @@ public class Busqueda extends JFrame {
 		contentPane.add(separator_1_2);
 		
 		JPanel btnbuscar = new JPanel();
-		btnbuscar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Obtener datos del input
-				String buscar = txtBuscar.getText().toString();
-				
-				buscar_huesped bsHuesped = new buscar_huesped();
-				
-				DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
-				tbHuespedes.setModel(modelo);
-				
-			}
-		});
+		
 		btnbuscar.setLayout(null);
 		btnbuscar.setBackground(new Color(12, 138, 199));
 		btnbuscar.setBounds(748, 125, 122, 35);
 		btnbuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnbuscar);
-		
+		btnbuscar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (scroll_table.isShowing()) {
+					// Buscar reservas
+					
+				} else if (scroll_tableHuespedes.isShowing()) {
+					// Buscar huespedes
+					// Obtener datos del input
+					String buscar = txtBuscar.getText().toString();
+					
+					// Crear nueva tabla
+					buscar_huesped bsHuesped = new buscar_huesped();
+					DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
+					tbHuespedes.setModel(modelo);
+				}
+			}
+		});
+
 		JLabel lblBuscar = new JLabel("BUSCAR");
 		lblBuscar.setBounds(0, 0, 122, 35);
 		btnbuscar.add(lblBuscar);
@@ -253,6 +279,28 @@ public class Busqueda extends JFrame {
 		btnEditar.setBounds(635, 508, 122, 35);
 		btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnEditar);
+		btnEditar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (scroll_table.isShowing()) {
+					// Editar reservas
+					
+				} else if (scroll_tableHuespedes.isShowing()) {
+					// Editar Huespedes
+					editar_huesped editHuesped = new editar_huesped();
+					if (rowSelect == -1) {
+						JOptionPane.showMessageDialog(null, "Selecciona la fila a editar");
+					} else {
+						String [] huespedes = new String[7];
+						for (int i = 0; i < huespedes.length; i++) {
+							huespedes[i] = tbHuespedes.getValueAt(rowSelect, i).toString();
+						}
+						editHuesped.editarHuesped(huespedes[0], huespedes[1], huespedes[2], huespedes[3], huespedes[4], huespedes[5], huespedes[6]);
+						JOptionPane.showMessageDialog(null, "Editado Correctamente");
+					}
+				}
+			}
+		});
 		
 		JLabel lblEditar = new JLabel("EDITAR");
 		lblEditar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -267,6 +315,26 @@ public class Busqueda extends JFrame {
 		btnEliminar.setBounds(767, 508, 122, 35);
 		btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnEliminar);
+		btnEliminar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (scroll_table.isShowing()) {
+					// Eliminar reservas
+					
+				} else if (scroll_tableHuespedes.isShowing()) {
+					// Eliminar huespedes
+					eliminar_huesped eliminarH = new eliminar_huesped();
+					if (rowSelect == -1) {
+						JOptionPane.showMessageDialog(null, "Selecciona la fila a eliminar");
+					} else {
+						eliminarH.eliminarHuesped(tbHuespedes.getValueAt(rowSelect, 0).toString());
+						JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
+						DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
+						tbHuespedes.setModel(modelo);
+					}
+				}
+			}
+		});
 		
 		JLabel lblEliminar = new JLabel("ELIMINAR");
 		lblEliminar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -277,7 +345,7 @@ public class Busqueda extends JFrame {
 		setResizable(false);
 	}
 	
-//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
+// Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();

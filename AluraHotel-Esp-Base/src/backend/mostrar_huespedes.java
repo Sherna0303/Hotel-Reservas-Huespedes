@@ -16,8 +16,6 @@ public class mostrar_huespedes {
 	ResultSet resultSet = null;
 	
 	public DefaultTableModel mostrarHuespedes() {
-		//Concetamos con la base de datos
-		connection = conexion.conectar();
 		
 		String [] nombresColumnas = {"Número de Huesped", "Nombre", "Apellido", "Fecha de Nacimiento", "Nacionalidad", "Telefono", "Número de Reserva"};
 		String [] huespedes = new String[7];
