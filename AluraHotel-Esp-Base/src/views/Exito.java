@@ -49,7 +49,7 @@ public class Exito extends JDialog {
 		{
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setIcon(new ImageIcon(Exito.class.getResource("/imagenes/Ha-100px.png")));
-			lblNewLabel.setBounds(123, 11, 100, 100);
+			lblNewLabel.setBounds(133, 11, 114, 111);
 			contentPanel.add(lblNewLabel);
 		}
 		{
