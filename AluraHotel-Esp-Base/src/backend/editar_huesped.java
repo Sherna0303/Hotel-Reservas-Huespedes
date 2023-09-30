@@ -21,7 +21,7 @@ public class editar_huesped {
 		if (nombre.isEmpty() || apellido.isEmpty() || fechaN.isEmpty() || nacionalidad.isEmpty() || telefono.isEmpty() || numReserva.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Los campos no pueden estar vacios");
 		} else {
-			//Consulta
+			// Consulta
 			String consultaString = "UPDATE huespedes SET nombre='"+nombre+"', apellido='"+apellido+"', fechaNacimiento='"+fechaN+"', nacionalidad='"+nacionalidad+"', telefono='"+telefono+"', numReserva='"+numReserva+"' WHERE idhuespedes="+id;
 			try {
 				connection = conexion.conectar();

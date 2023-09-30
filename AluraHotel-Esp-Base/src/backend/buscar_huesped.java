@@ -22,7 +22,7 @@ public class buscar_huesped {
 		String [] huespedes = new String[7];
 		DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
-		//Consulta
+		// Consulta
 		String consultaString = "SELECT * FROM huespedes WHERE nombre LIKE '%"+dato+"%' OR apellido LIKE '%"+dato+"%' OR nacionalidad LIKE '%"+dato+"%'";
 		
 		try {

@@ -21,7 +21,7 @@ public class mostrar_huespedes {
 		String [] huespedes = new String[7];
 		DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
-		//Consulta
+		// Consulta
 		String consultaString = "SELECT * FROM huespedes";
 		
 		try {

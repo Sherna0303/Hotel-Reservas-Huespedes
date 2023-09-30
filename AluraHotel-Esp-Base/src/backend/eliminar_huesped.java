@@ -17,7 +17,7 @@ public class eliminar_huesped {
 	ResultSet resultSet = null;
 	
 	public void eliminarHuesped(String id) {
-		//Consulta
+		// Consulta
 		String consultaString = "DELETE FROM huespedes WHERE idhuespedes="+id;
 		try {
 			connection = conexion.conectar();

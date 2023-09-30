@@ -14,13 +14,13 @@ public class registrar_huesped {
 	
 	public void registrarHuesped(String nombre, String apellido, String fechaN, String nacionalidad, String telefono, String numReserva) {
 		try {
-			//Concetamos con la base de datos
+			// Concetamos con la base de datos
 			connection = conexion.conectar();
 			
-			//Consulta
+			// Consulta
 			String consultaString = "INSERT INTO huespedes (nombre, apellido, fechaNacimiento, nacionalidad, telefono, numReserva)VALUES(?,?,?,?,?,?)";
 			
-			//Agregamos los datos de la consulta
+			// Agregamos los datos de la consulta
 			ps = connection.prepareStatement(consultaString);
 			ps.setString(1, nombre);
 			ps.setString(2, apellido);
@@ -29,7 +29,7 @@ public class registrar_huesped {
 			ps.setString(5, telefono);
 			ps.setString(6, numReserva);
 			
-			//Ejecutamos
+			// Ejecutamos
 			ps.execute();
 			
 		} catch (SQLException ex) {

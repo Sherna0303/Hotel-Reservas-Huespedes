@@ -271,12 +271,12 @@ public class RegistroHuesped extends JFrame {
 				
 				registrar_huesped huesped = new registrar_huesped();
 				
-				//Guardar datos
+				// Guardar datos
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
 				java.sql.Date fechaNacimiento = null;
 				
-				//Tomar fecha del Jcalendar y tomar unicamente la fecha 0000-00-00
+				// Tomar fecha del Jcalendar y tomar unicamente la fecha 0000-00-00
 				Long d = txtFechaN.getDate().getTime();
 				fechaNacimiento = new java.sql.Date(d);
 				
@@ -287,10 +287,10 @@ public class RegistroHuesped extends JFrame {
 				if (nombre.isEmpty() || apellido.isEmpty() || nacionalidad.isEmpty() || telefono.isEmpty() || numReserva.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Debe completar todos los datos");
 				} else {
-					//Agregar al huesped
+					// Agregar al huesped
 					huesped.registrarHuesped(nombre, apellido, fechaNacimiento.toString(), nacionalidad, telefono, numReserva);
 					
-					//Confirmamos el ingreso de datos al usuario
+					// Confirmamos el ingreso de datos al usuario
 					Exito exito = new Exito();
 					exito.setVisible(true);
 					dispose();	
@@ -353,7 +353,7 @@ public class RegistroHuesped extends JFrame {
 	}
 	
 	
-	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
+	// Código que permite mover la ventana por la pantalla según la posición de "x" y "y"	
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();
