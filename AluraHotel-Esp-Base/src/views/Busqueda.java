@@ -15,22 +15,14 @@ import backend.editar_huesped;
 import backend.eliminar_huesped;
 import backend.mostrarReservas;
 import backend.mostrar_huespedes;
-import bdConnect.Conexion;
-
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import java.awt.SystemColor;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.List;
-import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
@@ -39,12 +31,6 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -128,7 +114,7 @@ public class Busqueda extends JFrame {
 		
 		// Mostrar todos las reservas registradas
 		mostrarReservas mostrarR = new mostrarReservas();
-		DefaultTableModel modeloR = mostrarR.mostrarReservas();
+		DefaultTableModel modeloR = mostrarR.mostrarReserva();
 		tbReservas.setModel(modeloR);
 		
 		tbReservas.addMouseListener(new MouseAdapter() {
@@ -368,7 +354,7 @@ public class Busqueda extends JFrame {
 						eliminarH.eliminarHuesped(tbReservas.getValueAt(rowSelect, 0).toString());
 						JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
 						//Actualizar tabla reservas
-						DefaultTableModel modeloR = mostrarR.mostrarReservas();
+						DefaultTableModel modeloR = mostrarR.mostrarReserva();
 						tbReservas.setModel(modeloR);
 						//Actualizar tabla huespedes
 						DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
@@ -384,7 +370,7 @@ public class Busqueda extends JFrame {
 						eliminarReserva.elimnarReserva(tbHuespedes.getValueAt(rowSelect, 6).toString());
 						JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
 						//Actualizar tabla reservas
-						DefaultTableModel modeloR = mostrarR.mostrarReservas();
+						DefaultTableModel modeloR = mostrarR.mostrarReserva();
 						tbReservas.setModel(modeloR);
 						//Actualizar tabla huespedes
 						DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();

@@ -18,7 +18,7 @@ public class mostrarReservas {
 	Statement stm = null;
 	ResultSet resultSet = null;
 	
-public DefaultTableModel mostrarReservas() {
+public DefaultTableModel mostrarReserva() {
 		
 		String [] nombresColumnas = {"Numero de Reserva", "Fecha Check In", "Fecha Check Out", "Valor", "Forma de Pago"};
 		String [] reserva = new String[5];

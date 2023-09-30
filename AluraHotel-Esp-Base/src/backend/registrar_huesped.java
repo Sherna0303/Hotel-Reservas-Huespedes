@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import bdConnect.Conexion;
-import views.Exito;
 
 public class registrar_huesped {
 	Conexion conexion = new Conexion();
