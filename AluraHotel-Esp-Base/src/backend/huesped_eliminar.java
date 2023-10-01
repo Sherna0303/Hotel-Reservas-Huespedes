@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 import bdConnect.Conexion;
 
-public class eliminar_huesped {
+public class huesped_eliminar {
 	
 	Conexion conexion = new Conexion();
 	Connection connection = null;

@@ -9,20 +9,20 @@ import javax.swing.table.DefaultTableModel;
 
 import bdConnect.Conexion;
 
-public class mostrar_huespedes {
+public class huesped_buscar {
 	Conexion conexion = new Conexion();
 	Connection connection = null;
 	Statement stm = null;
 	ResultSet resultSet = null;
 	
-	public DefaultTableModel mostrarHuespedes() {
+	public DefaultTableModel buscarHuesped(String dato) {
 		
 		String [] nombresColumnas = {"Número de Huesped", "Nombre", "Apellido", "Fecha de Nacimiento", "Nacionalidad", "Telefono", "Número de Reserva"};
 		String [] huespedes = new String[7];
 		DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
 		// Consulta
-		String consultaString = "SELECT * FROM huespedes";
+		String consultaString = "SELECT * FROM huespedes WHERE nombre LIKE '%"+dato+"%' OR apellido LIKE '%"+dato+"%' OR nacionalidad LIKE '%"+dato+"%'";
 		
 		try {
 			connection = conexion.conectar();

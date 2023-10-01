@@ -10,11 +10,11 @@ import javax.swing.table.DefaultTableModel;
 import backend.BuscarReserva;
 import backend.EditarReserva;
 import backend.EliminarReserva;
-import backend.buscar_huesped;
-import backend.editar_huesped;
-import backend.eliminar_huesped;
+import backend.huesped_buscar;
+import backend.huesped_editar;
+import backend.huesped_eliminar;
 import backend.mostrarReservas;
-import backend.mostrar_huespedes;
+import backend.huesped_mostrar;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -142,7 +142,7 @@ public class Busqueda extends JFrame {
 		scroll_tableHuespedes.setVisible(true);
 		
 		// Mostrar todos los huespedes registrados
-		mostrar_huespedes mostrarHuepedes = new mostrar_huespedes();
+		huesped_mostrar mostrarHuepedes = new huesped_mostrar();
 		DefaultTableModel modelo = mostrarHuepedes.mostrarHuespedes();
 		tbHuespedes.setModel(modelo);
 		
@@ -269,7 +269,7 @@ public class Busqueda extends JFrame {
 					} else if (scroll_tableHuespedes.isShowing()) {
 						// Buscar huespedes
 						// Crear nueva tabla
-						buscar_huesped bsHuesped = new buscar_huesped();
+						huesped_buscar bsHuesped = new huesped_buscar();
 						DefaultTableModel modelo = bsHuesped.buscarHuesped(buscar);
 						tbHuespedes.setModel(modelo);
 					}
@@ -311,7 +311,7 @@ public class Busqueda extends JFrame {
 					}
 				} else if (scroll_tableHuespedes.isShowing()) {
 					// Editar Huespedes
-					editar_huesped editHuesped = new editar_huesped();
+					huesped_editar editHuesped = new huesped_editar();
 					if (rowSelect == -1) {
 						JOptionPane.showMessageDialog(null, "Selecciona la fila a editar");
 					} else {
@@ -343,7 +343,7 @@ public class Busqueda extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				EliminarReserva eliminarReserva = new EliminarReserva();
-				eliminar_huesped eliminarH = new eliminar_huesped();
+				huesped_eliminar eliminarH = new huesped_eliminar();
 				
 				if (scroll_table.isShowing()) {
 					// Eliminar reservas

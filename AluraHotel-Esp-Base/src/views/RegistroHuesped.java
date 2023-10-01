@@ -11,7 +11,7 @@ import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
 
 import backend.Registrar_Reserva;
-import backend.registrar_huesped;
+import backend.huesped_registrar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -263,7 +263,7 @@ public class RegistroHuesped extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				registrar_huesped huesped = new registrar_huesped();
+				huesped_registrar huesped = new huesped_registrar();
 				
 				// Guardar datos
 				String nombre = txtNombre.getText();

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import bdConnect.Conexion;
 
-public class editar_huesped {
+public class huesped_editar {
 	
 	Conexion conexion = new Conexion();
 	Connection connection = null;

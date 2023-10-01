@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import bdConnect.Conexion;
 
-public class registrar_huesped {
+public class huesped_registrar {
 	Conexion conexion = new Conexion();
 	Connection connection = null;
 	PreparedStatement ps = null;
